@@ -1,0 +1,25 @@
+{
+    "name": "cynode/asset-manager",
+    "description": "Asset manager using symfony console & assetic",
+    "authors": [
+        {
+            "name": "Nurcahyo al Hidayah",
+            "email": "nurcahyo@inlabstudio.com"
+        }
+    ],
+    "require": {
+        "kriswallsmith/assetic": "1.1.2",
+        "leafo/lessphp": "0.4.0",
+        "coffeescript/coffeescript": "1.3.1",
+        "natxet/CssMin": "dev-master",
+        "mrclay/minify": "2.1.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.27"
+    },
+    "autoload": {
+        "psr-0": {"Cynode\\AssetManager":""}
+    },
+    "license": "MIT",
+    "minimum-stability": "dev"
+}
