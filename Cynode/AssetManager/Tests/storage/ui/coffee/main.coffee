@@ -1,2 +1,2 @@
-coffeeTest=()->
+coffeeTest = ()->
   alert('just alert')

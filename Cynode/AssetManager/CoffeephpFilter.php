@@ -1,36 +1,34 @@
 <?php
 
 namespace Cynode\AssetManager;
+
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
+use CoffeeScript\Compiler as CoffeeScript;
 
-class CoffeephpFilter implements FilterInterface {
+class CoffeephpFilter implements FilterInterface
+{
 
     public $options = array();
 
-    public function __construct($options = array()) {
+    public function __construct($options = array())
+    {
+        if (!isset($options['header']))
+            $options['header'] = false;
         $this->options = $options;
     }
 
-    public function filterLoad(AssetInterface $asset) {
-        
+    public function filterLoad(AssetInterface $asset)
+    {
+        $content = $asset->getContent();
+        $asset->setContent(CoffeeScript::compile($content, $this->options));
     }
 
-    public function filterDump(AssetInterface $asset) {
+    public function filterDump(AssetInterface $asset)
+    {
         $content = $asset->getContent();
-
         // Compiler::compile doesn't like empty strings
-
-        try {
-            if (trim($content)) {
-                $this->options['filename'] = $asset->getSourcePath();
-                $content = \CoffeeScript\Compiler::compile($content, $this->options);
-            }
-        } catch (Exception $e) {
-            $content = $e->getMessage();
-        }
-
-        $asset->setContent($content);
+        $this->options['filename'] = $asset->getSourcePath();
     }
 
 }
