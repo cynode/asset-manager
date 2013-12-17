@@ -18,7 +18,9 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
     public function deleteRecursive($dir)
     {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)) as $file) {
-            unlink($file->getPathname());
+            if (!preg_match("#.gitinclude#", $file->getPathName())) {
+                unlink($file->getPathname());
+            }
         }
     }
 
@@ -32,7 +34,7 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->deleteRecursive($this->config['cacheDir']);
-//        $this->deleteRecursive($this->config['assetDir']);
+        $this->deleteRecursive($this->config['assetDir']);
         parent::tearDown();
     }
 
