@@ -8,5 +8,6 @@ php:
 before_script:
   - composer self-update && composer --version
   - composer install
+  
 
 script: phpunit --coverage-text

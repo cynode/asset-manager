@@ -10,14 +10,14 @@ return array(
             'class' => 'Assetic\Filter\JSMinFilter',
         ),
         'less' => array(
-            'class' => 'Assetic\Filter\LessFilter',
-            '__construct' => array('/usr/bin/node'),
+            'class' => 'Assetic\Filter\LessphpFilter',
         ),
         'css_min' => array(
             'class' => 'Assetic\Filter\CssMinFilter',
         ),
         'coffee' => array(
             'class' => 'Cynode\AssetManager\CoffeephpFilter',
+            '__construct' => array(array('bare' => true)),
         ),
     ),
     'assets' => array(
