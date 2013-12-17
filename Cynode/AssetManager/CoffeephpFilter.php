@@ -13,7 +13,7 @@ class CoffeephpFilter implements FilterInterface {
     }
 
     public function filterLoad(AssetInterface $asset) {
-        // derp
+        
     }
 
     public function filterDump(AssetInterface $asset) {

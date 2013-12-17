@@ -49,8 +49,6 @@ class Component
             throw new \RuntimeException("Cache directory not setted in configuration files, Please set it with key 'cacheDir'=>'valid/path/to/cache/directory'");
         } elseif (!is_dir($this->config['cacheDir'])) {
             throw new \RuntimeException(sprintf('Directory "%s" could not be found.', $this->config['cacheDir']));
-        } elseif (!is_writable($this->config['cacheDir'])) {
-            throw new \RuntimeException(sprintf('Cache directory "%s" could not be written by webserver, make sure cache directory is writable by webserver.', $this->config['cacheDir']));
         }
         $modifiedTime = filemtime($configFile);
         if (!is_file($this->config['cacheDir'] . "/assetsLoader_{$modifiedTime}.php")) {
@@ -110,7 +108,7 @@ class Component
                         foreach ($globOrFilter as $filterName) {
                             $filter[] = $this->fm->get($filterName);
                         }
-                        $collection->add(new \Assetic\Asset\GlobAsset($globOrFilter, $filter));
+                        $collection->add(new \Assetic\Asset\GlobAsset($keyOrGlob, $filter));
                     }
                 }
             }

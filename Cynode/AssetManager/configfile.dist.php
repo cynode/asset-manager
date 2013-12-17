@@ -2,7 +2,7 @@
 
 $ui = __DIR__ . '/../ui';
 return array(
-    'cacheDir' => __DIR__ . '/../cache/asset', 
+    'cacheDir' => __DIR__ . '/../cache/asset',
     'assetDir' => dirname(__DIR__) . '/public/assets',
     'baseDir' => $ui,
     'filters' => array(
@@ -10,13 +10,16 @@ return array(
             'class' => 'Assetic\Filter\JSMinFilter',
             '__construct' => array(),
         ),
-        'less' => array( 
+        'less' => array(
             'class' => 'Assetic\Filter\LessphpFilter',
             '__construct' => array()
         ),
         'css_min' => array(
             'class' => 'Assetic\Filter\CssMinFilter',
         ),
+        'coffee' => array(
+            'class' => 'Cynode\AssetManager\CoffeephpFilter'
+        )
     ),
     'assets' => array(
         'jquery_js' => array(
@@ -32,8 +35,10 @@ return array(
         'main_js' => array(
             '@jquery_js',
             '@twitter_js',
-            'files' => array(
-                "$ui/default/coffee/main.coffee"
+            'globs' => array(
+                "$ui/default/coffee/main.coffee/*" => array(
+                    'coffee'
+                )
             ),
             'filters' => array('js_min')
         )

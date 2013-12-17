@@ -1,0 +1,2 @@
+coffeeTest=()->
+  alert('just alert')
