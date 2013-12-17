@@ -8,6 +8,7 @@
         }
     ],
     "require": {
+        "php":">=5.3.10",
         "kriswallsmith/assetic": "1.1.2",
         "leafo/lessphp": "0.4.0",
         "coffeescript/coffeescript": "1.3.1",
