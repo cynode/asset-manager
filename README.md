@@ -80,12 +80,12 @@ See [assetic](https://github.com/kriswallsmith/assetic) for more documentation t
 <?php
 use Cynode\AssetManager\AssetManager;
 require '../vendor/autoload.php';
-//your bootstrap script ....
-//..
-
 //change with your asset config file path
 $assetConfig=dirname(__DIR__) . '/config/asset.php';
 AssetManager::init($assetConfig);
+
+//your bootstrap script ....
+//..
 
 
 ```
