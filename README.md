@@ -72,7 +72,7 @@ return array(
 );
 ```
 
-See [assetic](https://github.com/kriswallsmith/assetic) for more documentation to configure your assets, and filters.
+See [assetic](https://github.com/kriswallsmith/assetic) for more documentation to learn how your assets, and filters works.
 
 - Initialize in your bootstrap file, for example /path/to/your/public/index.php
 
