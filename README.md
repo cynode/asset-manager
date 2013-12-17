@@ -1,9 +1,14 @@
 Cynode asset-manager [![Build Status](https://travis-ci.org/cynode/asset-manager.png)](https://travis-ci.org/cynode/asset-manager)
 =============
 
-Set up your assets manager in configuration file and let Cynode AssetManager compile it for you.
+Set up your asset manager in configuration file and let [assetic](https://github.com/kriswallsmith/assetic) compile it for you.
 
-Configuration files:
+Installation
+---
+This library require [composer](http://getcomposer.org) to install.
+require `"cynode/asset-manager": "dev-master"` and install it via composer.
+
+Sample Configuration files
 ---
 
 ```php
@@ -50,11 +55,13 @@ return array(
             ),
         ),
         'main_js' => array(
-            //this will concat your last registered asset name for this case this will use jquery_js assets
+            //this will concat your last registered asset name for this case this will use jquery_js assets and twitter_js assets
             '@jquery_js',
             '@twitter_js',
+            
             ////this key will register globs asset
             'globs' => array(
+            //this key will imported as globs assets and the value are filter for this glob asset.
                 "$ui/default/coffee/main.coffee/*" => array(
                     'coffee'
                 )
@@ -65,3 +72,5 @@ return array(
     )
 );
 ```
+
+See [assetic](https://github.com/kriswallsmith/assetic) for more documentation to configure your assets, and filters.
