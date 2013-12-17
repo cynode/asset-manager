@@ -1,4 +1,9 @@
 nbproject
 vendor/*
 composer.lock
+Cynode/AssetManager/Tests/storage/cache/*
+Cynode/AssetManager/Tests/storage/cache/asset-manager/*
+Cynode/AssetManager/Tests/storage/cache/asset-manager/chunks/*
+Cynode/AssetManager/Tests/storage/public/assets/*
+
 !.gitinclude
