@@ -5,11 +5,10 @@ Set up your asset manager in configuration file and let [assetic](https://github
 
 Installation
 ---
-This library require [composer](http://getcomposer.org) to install.
+- This library require [composer](http://getcomposer.org) to install.
 require `"cynode/asset-manager": "dev-master"` and install it via composer.
 
-Sample Configuration files
----
+- Create configuration files for example : /path/to/your/configDirectory/asset.php
 
 ```php
 <?php
@@ -74,3 +73,16 @@ return array(
 ```
 
 See [assetic](https://github.com/kriswallsmith/assetic) for more documentation to configure your assets, and filters.
+
+- Initialize in your bootstrap file, for example /path/to/your/public/index.php
+
+```php
+<?php
+use Cynode\AssetManager\AssetManager;
+require '../vendor/autoload.php';
+//your bootstrap script ....
+//..
+AssetManager::init(dirname(__DIR__) . '/config/asset.php');
+
+
+```
