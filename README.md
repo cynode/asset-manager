@@ -28,17 +28,17 @@ return array(
     'filters' => array(
         'js_min' => array(
             'class' => 'Assetic\Filter\JSMinFilter',
-            '__construct' => array(),
         ),
         'less' => array(
             'class' => 'Assetic\Filter\LessphpFilter',
-            '__construct' => array()
         ),
         'css_min' => array(
             'class' => 'Assetic\Filter\CssMinFilter',
         ),
         'coffee' => array(
-            'class' => 'Cynode\AssetManager\CoffeephpFilter'
+            'class' => 'Cynode\AssetManager\CoffeephpFilter',
+            //you can add arguments for your constructor filter here
+            '__construct'=>array(array('bare'=>true)),
         )
     ),
   //register your assets here.
