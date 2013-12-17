@@ -10,16 +10,19 @@ namespace Cynode\AssetManager;
 class AssetManager
 {
 
-    private $_packages = array();
+    /**
+     * @var Cynode\AssetManager\Component; 
+     */
+    private static $_accessor;
 
-    public function registerPackage($package)
+    public static function __callStatic($name, $arguments)
     {
-        $this->_packages[] = $package;
-    }
-
-    public function publish($path, $options = [])
-    {
-        
+        if (!static::$_accessor) {
+            static::$_accessor = new Component();
+        }
+        if (method_exists(static::$_accessor, $name))
+            return call_user_func_array(array(static::$_accessor, $name), $arguments);
+        throw new \Exception('Call to undefined method ' . get_class() . "::$name");
     }
 
 }
