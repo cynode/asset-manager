@@ -76,6 +76,11 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
     {
         $configFile = $this->configDir . '/asset.php';
         AssetManager::init($configFile);
+        $loaderFile = $this->config['cacheDir'] . '/assetsLoader_' . filemtime($configFile) . '.php';
+        $this->assertFileExists($loaderFile);
+        foreach (require $loaderFile as $alias => $name) {
+            $this->assertFileExists($name);
+        }
     }
 
 }

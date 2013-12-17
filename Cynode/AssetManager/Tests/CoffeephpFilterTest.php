@@ -24,6 +24,9 @@ class CoffeephpFilterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!class_exists('CoffeeScript\Compiler')) {
+            $this->markTestSkipped('CoffeeScript\CoffeeScript is not installed');
+        }
         $this->stringAsset = "test=()->alert('foo')";
         $this->compiledStringAsset = <<<EOD
 var test;
@@ -44,9 +47,6 @@ EOD;
 }).call(this);
 
 EOD;
-        if (!class_exists('CoffeeScript\Compiler')) {
-            $this->markTestSkipped('CoffeeScript\CoffeeScript is not installed');
-        }
     }
 
     public function testFilterLoad()
@@ -55,7 +55,7 @@ EOD;
         $asset = new StringAsset($this->stringAsset);
         $asset->load();
         $this->filter->filterLoad($asset);
-        $this->assertEquals($this->unbaredCompiledStringAsset, $asset->getContent(),'->filterLoad() sets an include path based on source url');
+        $this->assertEquals($this->unbaredCompiledStringAsset, $asset->getContent(), '->filterLoad() sets an include path based on source url');
     }
 
     public function testFilterLoadBared()
@@ -65,7 +65,7 @@ EOD;
         $this->filter->options['bare'] = true;
         $asset->load();
         $this->filter->filterLoad($asset);
-        $this->assertEquals($this->compiledStringAsset, $asset->getContent(),'->filterLoad() sets an include path based on source url');
+        $this->assertEquals($this->compiledStringAsset, $asset->getContent(), '->filterLoad() sets an include path based on source url');
     }
 
 }

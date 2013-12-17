@@ -114,9 +114,9 @@ class Component
             }
         }
         $this->am->set($name, new AssetCache($collection, new \Assetic\Cache\FilesystemCache($this->config['cacheDir'] . '/chunks')));
-        $this->_compiledAssets[$name] = $filename = str_replace('_', '.', $name);
-        file_put_contents("{$this->config['assetDir']}/{$filename}", $this->factory->createAsset("@$name", $filters)->dump());
-        @chmod("{$this->config['assetDir']}/{$filename}", 0777);
+        $this->_compiledAssets[$name] = $filename = "{$this->config['assetDir']}/" . str_replace('_', '.', $name);
+        file_put_contents($filename, $this->factory->createAsset("@$name", $filters)->dump());
+        @chmod($filename, 0777);
     }
 
     protected function createAssets()
