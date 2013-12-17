@@ -27,7 +27,6 @@ class CoffeephpFilter implements FilterInterface
     public function filterDump(AssetInterface $asset)
     {
         $content = $asset->getContent();
-        // Compiler::compile doesn't like empty strings
         $this->options['filename'] = $asset->getSourcePath();
     }
 
