@@ -19,7 +19,7 @@ $ui = __DIR__ . '/../ui';
 return array(
 //This is config key used for cache directory,this key is required and the value is your cache directory that must be exist and writeable by webserver
     'cacheDir' => __DIR__ . '/../cache/asset',
-//This is config key used for published assets directory,this key is required and the value is your published assets directory that must be exist and writeable, and must be a public path (accessible by web browser)
+//This is config key used for published assets directory,this key is required and the value is your published assets directory that must be exist, writeable, and must be a public path (accessible by web browser)
     'assetDir' => dirname(__DIR__) . '/public/assets',
 //This is config key used for your base UI directory *   
     'baseDir' => $ui,
