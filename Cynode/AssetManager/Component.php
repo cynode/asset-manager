@@ -19,19 +19,19 @@ class Component
 
     private $_compiledAssets = array();
     protected
-            $config = array(),
-            /**
-             * @var \Assetic\Factory\AssetFactory 
-             */
-            $factory,
-            /**
-             * @var \Assetic\AssetManager
-             */
-            $am,
-            /**
-             * @var \Assetic\FilterManager
-             */
-            $fm;
+        $config = array(),
+        /**
+         * @var \Assetic\Factory\AssetFactory 
+         */
+        $factory,
+        /**
+         * @var \Assetic\AssetManager
+         */
+        $am,
+        /**
+         * @var \Assetic\FilterManager
+         */
+        $fm;
 
     public function init($configFile)
     {
@@ -40,7 +40,7 @@ class Component
         }
         $this->config = require($configFile);
         $this->fm = new FilterManager();
-        $this->factory = new AssetFactory(isset($this->config['baseDir']) ? $this->config['baseDir'] : dirname($configFile), isset($this->config['debug']) ? $this->config['debug'] : false);
+        $this->factory = new AssetFactory(isset($this->config['baseDir']) ? $this->config['baseDir'] : "{$_SERVER['SCRIPT_FILENAME']}/..", isset($this->config['debug']) ? $this->config['debug'] : false);
         $this->am = new Am();
         $this->factory->setAssetManager($this->am);
         $this->factory->setFilterManager($this->fm);
@@ -50,14 +50,23 @@ class Component
         } elseif (!is_dir($this->config['cacheDir'])) {
             throw new \RuntimeException(sprintf('Directory "%s" could not be found.', $this->config['cacheDir']));
         }
-        $modifiedTime = filemtime($configFile);
-        if (!is_file($this->config['cacheDir'] . "/assetsLoader_{$modifiedTime}.php")) {
-            $this->compileAssets();
-            $this->createAssetsLoader($this->config['cacheDir'] . "/assetsLoader_{$modifiedTime}.php");
+        if (!isset($this->config['baseUrl'])) {
+            $this->config['baseUrl'] = substr_replace($this->config['assetDir'], '', 0, strlen($_SERVER['DOCUMENT_ROOT']));
         }
+        $modifiedTime = filemtime($configFile);
+        if (is_file($cached = "{$this->config['cacheDir']}/assetsLoader_{$modifiedTime}.bin")) {
+            $this->_compiledAssets = $this->loadAssetsLoader($cached);
+        }
+        $this->compileAssets();
+        $this->createAssetsLoader($this->config['cacheDir'] . "/assetsLoader_{$modifiedTime}.bin");
     }
 
-    protected function createAssetsLoader($loaderName)
+    protected function loadAssetsLoader($filename)
+    {
+        return unserialize(file_get_contents($filename));
+    }
+
+    protected function createAssetsLoader($fileName)
     {
         $dir = realpath("{$this->config['cacheDir']}");
         foreach (scandir($dir) as $item) {
@@ -65,8 +74,8 @@ class Component
                 unlink($dir . DIRECTORY_SEPARATOR . $item);
         }
 
-        file_put_contents($loaderName, "<?php \r\n\r\nreturn " . var_export($this->_compiledAssets, true) . ";");
-        @chmod($loaderName, 0777);
+        file_put_contents($fileName, serialize($this->_compiledAssets));
+        @chmod($fileName, 0777);
     }
 
     protected function setFilters()
@@ -114,8 +123,9 @@ class Component
             }
         }
         $this->am->set($name, new AssetCache($collection, new \Assetic\Cache\FilesystemCache($this->config['cacheDir'] . '/chunks')));
-        $this->_compiledAssets[$name] = $filename = "{$this->config['assetDir']}/" . str_replace('_', '.', $name);
-        file_put_contents($filename, $this->factory->createAsset("@$name", $filters)->dump());
+        $filename = str_replace('_', '.', $name);
+        $this->_compiledAssets[$name] = "{$this->config['baseUrl']}/" . $filename;
+        file_put_contents("{$this->config['assetDir']}/$filename", $this->factory->createAsset("@$name", $filters)->dump());
         @chmod($filename, 0777);
     }
 
@@ -132,6 +142,13 @@ class Component
             $this->setFilters();
         if (isset($this->config['assets']))
             $this->createAssets();
+    }
+
+    public function assetUrl($alias)
+    {
+        if (isset($this->_compiledAssets[$alias]))
+            return $this->_compiledAssets[$alias];
+        return false;
     }
 
 }
