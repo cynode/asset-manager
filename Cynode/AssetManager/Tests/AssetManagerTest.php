@@ -96,6 +96,27 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame($this->getCompiledAssetsUrl(), '_compiledAssets', $assetManager);
     }
 
+    public function testAssetUrlWithOutBaseUrl()
+    {
+        $configFile = $this->configDir . '/asset.php';
+        $assetManager = new Component();
+        $assetManager->init($configFile);
+        $this->assertEquals($this->config['assetDir']."/coffee.js", $assetManager->assetUrl('coffee_js'));
+    }
+
+    public function testAssetUrlWithBaseUrl()
+    {
+        $configFile = $this->configDir . '/asset.php';
+        $assetManager = new Component();
+        $assetManager->init($configFile);
+        $reflection=new \ReflectionClass($assetManager);
+        $property=$reflection->getProperty('config');
+        $property->setAccessible(true);
+        $this->config['baseUrl']='/assets';
+        $property->setValue($assetManager, $this->config);
+        $this->assertEquals($this->config['assetDir']."/coffee.js", $reflection->getMethod('assetUrl')->invoke($assetManager,'coffee_js'));
+    }
+
 }
 
 ?>

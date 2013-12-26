@@ -146,9 +146,7 @@ class Component
 
     public function assetUrl($alias)
     {
-        if (isset($this->_compiledAssets[$alias]))
-            return $this->_compiledAssets[$alias];
-        return false;
+        return isset($this->_compiledAssets[$alias]) ? $this->_compiledAssets[$alias] : FALSE;
     }
 
 }
