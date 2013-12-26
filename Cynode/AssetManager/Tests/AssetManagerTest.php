@@ -2,7 +2,8 @@
 
 namespace Cynode\AssetManager\Tests;
 
-use Cynode\AssetManager\AssetManager;
+use Cynode\AssetManager\AssetManager,
+    Cynode\AssetManager\Component;
 
 /**
  * Description of AssetManagerTest
@@ -12,8 +13,8 @@ use Cynode\AssetManager\AssetManager;
 class AssetManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $configDir;
-    protected $config;
+    protected $configDir,
+        $config;
 
     public function deleteRecursive($dir)
     {
@@ -22,6 +23,12 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
                 unlink($file->getPathname());
             }
         }
+    }
+
+    public function getCompiledAssetsUrl()
+    {
+        $config = $this->configDir . '/asset.php';
+        return unserialize(file_get_contents($this->config['cacheDir'] . '/assetsLoader_' . filemtime($config) . '.bin'));
     }
 
     public function setUp()
@@ -76,11 +83,17 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
     {
         $configFile = $this->configDir . '/asset.php';
         AssetManager::init($configFile);
-        $loaderFile = $this->config['cacheDir'] . '/assetsLoader_' . filemtime($configFile) . '.php';
+        $loaderFile = $this->config['cacheDir'] . '/assetsLoader_' . filemtime($configFile) . '.bin';
         $this->assertFileExists($loaderFile);
-        foreach (require $loaderFile as $alias => $name) {
-            $this->assertFileExists($name);
-        }
+    }
+
+    public function testInitWithCacheIsExist()
+    {
+        $configFile = $this->configDir . '/asset.php';
+        $assetManager = new Component();
+        $assetManager->init($configFile);
+        $assetManager->init($configFile);
+        $this->assertAttributeSame($this->getCompiledAssetsUrl(), '_compiledAssets', $assetManager);
     }
 
 }

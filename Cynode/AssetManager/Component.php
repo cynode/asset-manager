@@ -136,7 +136,7 @@ class Component
         }
     }
 
-    public function compileAssets()
+    protected function compileAssets()
     {
         if (isset($this->config['filters']))
             $this->setFilters();
